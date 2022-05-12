@@ -13,29 +13,23 @@ import java.time.Duration;
 public class UserMainPage {
 
     private final WebDriver driver;
+    private final WebDriverWait wait;
 
     public UserMainPage(WebDriver driver) {
         this.driver = driver;
         driver.get("https://demo.opencart.com/");
-//        driver.get("https://www.opencart.com/index.php?route=cms/demo");
+        wait = new WebDriverWait(driver, Duration.ofSeconds(30));
         PageFactory.initElements(driver, this);
     }
 
-    public UserMainPage clickOn(String xpath){
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
-//        try {
-//            Thread.sleep(1000);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
+    public UserMainPage clickOn(String xpath) {
         WebElement element = driver.findElement(By.xpath(xpath));
         wait.until(ExpectedConditions.visibilityOf(element));
         Utils.jsClick(element, driver);
         return this;
     }
 
-    public UserMainPage clickOnShowingUpWindow(String xpath){
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
+    public UserMainPage clickOnShowingUpWindow(String xpath) {
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
@@ -47,8 +41,7 @@ public class UserMainPage {
         return this;
     }
 
-    public UserMainPage chooseInSlidingArea(String xpath, String text){
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
+    public UserMainPage chooseInSlidingArea(String xpath, String text) {
         Select selectVar = new Select(driver.findElement(By.xpath(xpath)));
         try {
             Thread.sleep(1000);
@@ -59,12 +52,12 @@ public class UserMainPage {
         return this;
     }
 
-    public boolean isPresentOnPage(String xpath){
+    public boolean isPresentOnPage(String xpath) {
         WebElement element = driver.findElement(By.xpath(xpath));
         return element.isDisplayed();
     }
 
-    public UserMainPage fillTextArea(String xpath, String text){
+    public UserMainPage fillTextArea(String xpath, String text) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
         WebElement textArea = driver.findElement(By.xpath(xpath));
         wait.until(ExpectedConditions.visibilityOf(textArea));
@@ -72,15 +65,19 @@ public class UserMainPage {
         return this;
     }
 
-    public UserMainPage clickOnTrial(String xpath){
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
-        Actions actions = new Actions(driver);
+    public UserMainPage waitForRefresh() {
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return this;
+    }
+
+    public UserMainPage clearArea(String xpath) {
         WebElement element = driver.findElement(By.xpath(xpath));
-        actions.moveToElement(driver.findElement(By.xpath("//*[@id=\"cms-demo\"]/div[2]/div/div[1]/div/img")));
-        actions.click().perform();
-//                wait.until(ExpectedConditions.visibilityOf(element));
-//        Utils.jsClick(element, driver);
-//        element.click();
+        wait.until(ExpectedConditions.visibilityOf(element));
+        element.clear();
         return this;
     }
 
